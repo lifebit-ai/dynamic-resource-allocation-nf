@@ -24,11 +24,11 @@ log.info "queueSize                             : ${params.queueSize}"
 log.info "executor                              : ${params.executor}"
 if(params.executor == 'google-lifesciences') {
 log.info "gls_bootDiskSize (defined)            : ${params.gls_bootDiskSize}"
-log.info "gls_bootDiskSize (allocated)          : google.lifeSciences.bootDiskSize"
+log.info "gls_bootDiskSize (allocated)          : ${params.gls_bootDiskSize_allocated}"
 log.info "gls_preemptible                       : ${params.gls_preemptible}"
 log.info "zone                                  : ${params.zone}"
 log.info "network                               : ${params.network}"
-log.info "subnetwork                                    : ${params.subnetwork}"
+log.info "subnetwork                            : ${params.subnetwork}"
 }
 log.info ""
 
