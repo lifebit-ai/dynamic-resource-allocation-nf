@@ -45,7 +45,7 @@ processAInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuff
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
 	tag "cpus: ${task.cpus}, cloud storage: ${cloud_storage_file}"
-	disk { a_file.size() < 11.MB? 40.GB : 60.GB}
+	disk { a_file.size() < '11 MB' ? '40 GB' : '60 GB' }
 	
 	input:
 	val x from processAInput
