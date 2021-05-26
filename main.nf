@@ -44,12 +44,11 @@ processAInputFiles = Channel.fromPath("${params.dataLocation}/*${params.fileSuff
 process processA {
 	publishDir "${params.output}/${task.hash}", mode: 'copy'
 	tag "cpus: ${task.cpus}, cloud storage: ${cloud_storage_file}"
-
+	disk { a_file.size() < 11.MB? 40.GB : 60.GB}
+	
 	input:
 	val x from processAInput
 	file(a_file) from processAInputFiles
-	each file("*") from ch_utils
-	each file("*") from ch_src
 
 	output:
 	val x into processAOutput
@@ -62,18 +61,20 @@ process processA {
 	echo \$pwd
 	timeToWait=\$(shuf -i ${params.processATimeRange} -n 1)
 	for i in {1..${numberFilesForProcessA}};
-	do echo test > "\${pwd}"_file_\${i}.txt
+	do du -h  > ${a_file}.simpleName_du_command_output.txt
 	sleep ${params.processATimeBetweenFileCreationInSecs}
 	done;
 	sleep \$timeToWait
+	echo "task disk: ${task.disk}"
 	echo "task cpus: ${task.cpus}"
-
-	ls -l utils/
-	ls -l src/
-	ls -l src/nanocompare/
-
-	python3 utils/print.py
-	python3 utils/write.py
-	python3 src/nanocompare/nanoscript.py
+	echo "task memory: ${task.memory}"
+	
+	echo "File size summary"
+	echo "du -h:"
+	du -h *txt
+	
+	echo "Disk size overview"
+	echo "df -h:"
+	df -h
 	"""
 }
